@@ -42,10 +42,10 @@
         id: 'luoxi',
         type: '限定招募',
         title: '狼珀',
-        up: '洛茜', // 該池的 UP 角色
-        removed: ['萊萬汀', '潔爾佩塔'], // 該池不包含的常駐角色
-        image: './images/banner_luoxi.jpg', // 該池的圖片檔名
-        bgGradient: 'from-orange-400 to-yellow-200', // 備用背景顏色
+        up: '洛茜',
+        removed: ['萊萬汀', '潔爾佩塔'], 
+        image: './images/banner_luoxi.jpg', // 👈 請確認您 GitHub 上的圖片檔名是 banner_luoxi.jpg
+        bgGradient: 'from-orange-400 to-yellow-200',
         borderColor: 'border-orange-500',
         textColor: 'text-orange-400'
       },
@@ -53,45 +53,16 @@
         id: 'tangtang',
         type: '限定招募',
         title: '河流的女兒',
-        up: '湯湯', // 第二個池的 UP 是湯湯
-        removed: ['萊萬汀', '潔爾佩塔', '洛茜'], // 假設湯湯池抽不到洛茜
-        image: './images/banner_tangtang.jpg', // 可以準備另一張圖片
-        bgGradient: 'from-cyan-400 to-blue-300',
-        borderColor: 'border-cyan-500',
-        textColor: 'text-cyan-400'
-      },
-      {
-        id: 'tangtan5',
-        type: '限定招募',
-        title: '河流的女兒',
-        up: '湯湯', // 第二個池的 UP 是湯湯
-        removed: ['萊萬汀', '潔爾佩塔', '洛茜'], // 假設湯湯池抽不到洛茜
-        image: './images/banner_tangtang.jpg', // 可以準備另一張圖片
+        up: '湯湯', 
+        removed: ['萊萬汀', '潔爾佩塔', '洛茜'],
+        image: './images/banner_tangtang.jpg', // 👈 湯湯的卡池 Banner 圖片
         bgGradient: 'from-cyan-400 to-blue-300',
         borderColor: 'border-cyan-500',
         textColor: 'text-cyan-400'
       }
     ];
 
-    // ==========================================
-    // 🌟 雲端圖庫對應表 (CLOUD_IMAGES)
-    // ==========================================
-    const CLOUD_IMAGES = {
-      '洛茜': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/2/9/878914.png', 
-      '湯湯': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/2/12/729791.png',
-      '駿衛': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/351082.png',
-      '別禮': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/327299.png',
-      '艾爾黛拉': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/851863.png',
-      '伊馮': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/612099.png',
-      '萊萬汀': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/232490.png',
-      '黎風': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/265696.png',
-      '潔爾佩塔': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/268487.png',
-      '餘燼': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/168875.png',
-      
-      '阿列什': '', '大潘': '', '晝雪': '', '艾維文娜': '', '賽希': '', '弧光': '', '狼衛': '', '陳千語': '', '佩麗卡': '',
-      '安塔爾': '', '埃特拉': '', '秋栗': '', '卡契爾': '', '螢石': ''
-    };
-
+    // --- 模擬資料與設定 ---
     const CHARACTERS = {
       '洛茜': 6, '湯湯': 6, '駿衛': 6, '別禮': 6, '艾爾黛拉': 6, '伊馮': 6, '萊萬汀': 6, '黎風': 6, '潔爾佩塔': 6, '餘燼': 6,
       '阿列什': 5, '大潘': 5, '晝雪': 5, '艾維文娜': 5, '賽希': 5, '弧光': 5, '狼衛': 5, '陳千語': 5, '佩麗卡': 5,
@@ -110,7 +81,7 @@
       4: { bg: 'bg-purple-50', text: 'text-purple-600', ring: 'ring-purple-500', glow: 'shadow-sm' },
     };
 
-    // --- 頭像組件 ---
+    // --- 頭像組件 (已徹底修復，純淨讀取本地資料夾) ---
     const OperatorPortrait = ({ name, isUp, size = 'large' }) => {
       const rarity = CHARACTERS[name];
       const colors = RARITY_COLORS[rarity];
@@ -119,11 +90,13 @@
         ? 'w-full h-full' 
         : 'w-[60px] h-[82px] md:w-[76px] md:h-[104px]';
 
-      const imgSrc = CLOUD_IMAGES[name] || `./images/${name}.png`;
+      // 🌟 直接指向本地圖片
+      const imgSrc = `./images/${name}.png`;
       const [imgFailed, setImgFailed] = useState(false); 
 
+      // 當抽到的角色改變時，重置錯誤狀態，讓瀏覽器嘗試去抓新圖片
       useEffect(() => {
-        setImgFailed(!CLOUD_IMAGES[name]); // 如果沒有雲端網址，預設會進入 fallback（除非本地有圖）
+        setImgFailed(false); 
       }, [imgSrc]);
 
       return (
@@ -133,8 +106,7 @@
             <img
               src={imgSrc}
               alt={name}
-              referrerPolicy="no-referrer"
-              onError={() => setImgFailed(true)}
+              onError={() => setImgFailed(true)} /* 只有真的抓不到檔案，才會啟動備用文字卡 */
               className="absolute inset-0 w-full h-full object-cover"
             />
           ) : (
@@ -162,8 +134,13 @@
     // ==========================================
     function GachaSimulator({ banner, onBack }) {
       const [showClearModal, setShowClearModal] = useState(false);
-      const [showBackModal, setShowBackModal] = useState(false); // 新增：返回大廳的確認視窗
+      const [showBackModal, setShowBackModal] = useState(false); 
       const [bannerImgFailed, setBannerImgFailed] = useState(false); 
+
+      // 當切換卡池時，確保 Banner 圖片失敗狀態重置
+      useEffect(() => {
+        setBannerImgFailed(false);
+      }, [banner]);
 
       const [pullHistory, setPullHistory] = useState([]); 
       const [currentPulls, setCurrentPulls] = useState([]); 
@@ -175,7 +152,6 @@
 
       const [expandedSections, setExpandedSections] = useState({ 6: true, 5: true, 4: false });
 
-      // 根據當前卡池的設定，動態產生常駐 6 星名單
       const standard6Stars = useMemo(() => {
         return OPERATORS[6].filter(name => name !== banner.up && !banner.removed.includes(name));
       }, [banner]);
@@ -268,7 +244,6 @@
 
       return (
         <div className="animate-fade-in-up">
-          {/* 返回按鈕 */}
           <div className="bg-gray-800 p-2 border-b border-gray-700 flex items-center">
             <button onClick={handleBackToLobby} className="flex items-center gap-1 text-gray-300 hover:text-white transition px-2 py-1 rounded hover:bg-gray-700">
               <ArrowLeft size={18} /> <span className="text-sm font-bold">返回大廳</span>
@@ -292,7 +267,6 @@
               </div>
             )}
             
-            {/* 保底規則浮動視窗 */}
             <div className={`absolute bottom-3 left-3 md:bottom-6 md:left-6 bg-black bg-opacity-75 p-2 md:p-3 rounded border-l-4 ${banner.borderColor} max-w-sm backdrop-blur-sm shadow-xl z-10`}>
               <p className="text-gray-200 text-xs md:text-sm leading-relaxed">
                 <span className={`${banner.textColor} font-bold`}>首次 120 抽必出 UP！</span> 80抽必定獲得 6★<br/>第65抽起 6★ 機率逐步提升<br/>
@@ -303,7 +277,6 @@
             </div>
           </div>
 
-          {/* 抽卡結果展示區 */}
           <div className="w-full bg-[#1e2024] min-h-[170px] p-2 md:p-4 flex items-center justify-center border-b-4 border-gray-700 shadow-inner">
             {currentPulls.length === 0 ? (
               <p className="text-gray-500 text-lg font-medium flex items-center gap-2">
@@ -394,7 +367,6 @@
             </div>
           </div>
 
-          {/* 重置確認彈窗 */}
           {showClearModal && (
             <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
               <div className="bg-white rounded-lg shadow-xl max-w-sm w-full p-6 animate-fade-in-up">
@@ -410,7 +382,6 @@
             </div>
           )}
 
-          {/* 返回大廳確認彈窗 */}
           {showBackModal && (
             <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
               <div className="bg-white rounded-lg shadow-xl max-w-sm w-full p-6 animate-fade-in-up">
@@ -461,7 +432,6 @@
                         e.target.nextSibling.style.display = 'flex';
                       }}
                     />
-                    {/* 圖片讀取失敗時的備用背景 */}
                     <div className={`hidden absolute inset-0 bg-gradient-to-br ${banner.bgGradient} opacity-80 flex-col items-center justify-center`}>
                       <span className="font-black text-2xl text-gray-900 drop-shadow-md">{banner.title}</span>
                     </div>
@@ -489,7 +459,6 @@
     // 🌐 主應用程式 (切換路由器)
     // ==========================================
     function App() {
-      // 記錄目前選擇的卡池 ID，如果為 null 則顯示大廳
       const [activeBannerId, setActiveBannerId] = useState(null);
 
       const activeBanner = useMemo(() => {
