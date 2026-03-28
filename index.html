@@ -31,28 +31,6 @@
     const Trash2 = ({size=18}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>;
     const Info = ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>;
 
-    // ==========================================
-    // 🌟 雲端圖庫對應表 (CLOUD_IMAGES)
-    // 已經為您移除了 GameKee 網址後方的加密與縮放參數，確保 100% 成功讀取
-    // ==========================================
-    const CLOUD_IMAGES = {
-      // 6★ (已套用您提供的純淨網址)
-      '洛茜': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/2/9/878914.png', 
-      '湯湯': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/2/12/729791.png',
-      '駿衛': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/351082.png',
-      '別禮': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/327299.png',
-      '艾爾黛拉': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/851863.png',
-      '伊馮': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/612099.png',
-      '萊萬汀': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/232490.png',
-      '黎風': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/265696.png',
-      '潔爾佩塔': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/268487.png',
-      '餘燼': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/168875.png',
-      
-      // 5★ & 4★ (若後續有圖片網址，可直接貼在引號內，例如 '阿列什': 'https://...', 沒填就會自動顯示文字卡牌)
-      '阿列什': '', '大潘': '', '晝雪': '', '艾維文娜': '', '賽希': '', '弧光': '', '狼衛': '', '陳千語': '', '佩麗卡': '',
-      '安塔爾': '', '埃特拉': '', '秋栗': '', '卡契爾': '', '螢石': ''
-    };
-
     // --- 模擬資料與設定 ---
     const CHARACTERS = {
       '洛茜': 6, '湯湯': 6, '駿衛': 6, '別禮': 6, '艾爾黛拉': 6, '伊馮': 6, '萊萬汀': 6, '黎風': 6, '潔爾佩塔': 6, '餘燼': 6,
@@ -124,8 +102,8 @@
         ? 'w-full h-full' 
         : 'w-[60px] h-[82px] md:w-[76px] md:h-[104px]';
 
-      // 🌟 改為直接讀取本地 images 資料夾下的圖片
-      const imgSrc = CLOUD_IMAGES[name] || `./images/${name}.png`;
+      // 🌟 純粹讀取本地 images 資料夾下的圖片
+      const imgSrc = `./images/${name}.png`;
       const [imgFailed, setImgFailed] = useState(false); 
 
       useEffect(() => {
@@ -227,7 +205,7 @@
               <div className="absolute inset-0 bg-gradient-to-r from-slate-800 via-slate-700 to-slate-900"></div>
               <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-center">
                 <span className="text-orange-400 font-bold tracking-widest text-sm mb-1">【塔衛二】合約招募</span>
-                <h1 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-200 italic tracking-wider mb-2 drop-shadow-lg">預見之眼</h1>
+                <h1 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-200 italic tracking-wider mb-2 drop-shadow-lg">狼珀</h1>
                 <p className="text-white text-lg md:text-xl font-light tracking-widest opacity-90 mb-4">限定 UP 幹員：<span className="font-bold text-orange-400">洛茜</span></p>
                 <div className="bg-black bg-opacity-60 inline-block p-2 px-3 rounded border-l-4 border-orange-500 max-w-sm backdrop-blur-sm">
                   <p className="text-gray-300 text-xs md:text-sm leading-relaxed">
