@@ -1,8 +1,12 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" translate="no">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- 🌟 防止瀏覽器自動翻譯干擾 React 渲染導致網頁崩潰白屏 -->
+  <meta name="google" content="notranslate">
+  
   <title>終末地卡池模擬器</title>
   
   <!-- 載入 Tailwind CSS -->
@@ -253,18 +257,17 @@
                     <span className={`font-black text-lg ${80 - pity80 <= 15 ? 'text-red-500' : 'text-gray-800'}`}>{80 - pity80} 抽</span>
                   </div>
                   
-                  {/* 大保底狀態顯示更新 */}
-                  {hasReceivedUp ? (
-                    <div className="flex justify-between items-center bg-gray-100 p-2 rounded border border-gray-200">
-                      <span className="text-gray-400">距 <span className="font-bold">UP 洛茜</span> 大保底：</span>
+                  {/* 【安全 DOM 渲染】大保底狀態顯示更新，確保結構不變，防止翻譯導致崩潰 */}
+                  <div className={`flex justify-between items-center p-2 rounded border ${hasReceivedUp ? 'bg-gray-100 border-gray-200' : 'bg-white border-orange-200'}`}>
+                    <span className={hasReceivedUp ? 'text-gray-400' : 'text-gray-600'}>
+                      距 <span className={`font-bold ${hasReceivedUp ? 'text-gray-500' : 'text-red-500'}`}>UP 洛茜</span> 大保底{hasReceivedUp ? '：' : '剩餘：'}
+                    </span>
+                    {hasReceivedUp ? (
                       <span className="font-bold text-sm text-gray-500 bg-gray-200 px-2 py-0.5 rounded">已達成</span>
-                    </div>
-                  ) : (
-                    <div className="flex justify-between items-center bg-white p-2 rounded border border-orange-200">
-                      <span className="text-gray-600">距 <span className="font-bold text-red-500">UP 洛茜</span> 大保底剩餘：</span>
+                    ) : (
                       <span className="font-black text-lg text-red-600">{120 - pity120} 抽</span>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
 
