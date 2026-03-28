@@ -28,4 +28,333 @@
     // --- 內建圖示 ---
     const ChevronRight = ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>;
     const ChevronDown = ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>;
-    const Trash2 = ({size=18}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
+    const Trash2 = ({size=18}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>;
+    const Info = ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>;
+
+    // ==========================================
+    // 🌟 雲端圖庫對應表 (CLOUD_IMAGES)
+    // 已經為您移除了 GameKee 網址後方的加密與縮放參數，確保 100% 成功讀取
+    // ==========================================
+    const CLOUD_IMAGES = {
+      // 6★ (已套用您提供的純淨網址)
+      '洛茜': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/2/9/878914.png', 
+      '湯湯': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/2/12/729791.png',
+      '駿衛': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/351082.png',
+      '別禮': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/327299.png',
+      '艾爾黛拉': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/851863.png',
+      '伊馮': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/612099.png',
+      '萊萬汀': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/232490.png',
+      '黎風': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/265696.png',
+      '潔爾佩塔': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/268487.png',
+      '餘燼': 'https://cdnimg-v2.gamekee.com/wiki2.0/images/w_152/h_212/50248/103682/2026/0/16/168875.png',
+      
+      // 5★ & 4★ (若後續有圖片網址，可直接貼在引號內，例如 '阿列什': 'https://...', 沒填就會自動顯示文字卡牌)
+      '阿列什': '', '大潘': '', '晝雪': '', '艾維文娜': '', '賽希': '', '弧光': '', '狼衛': '', '陳千語': '', '佩麗卡': '',
+      '安塔爾': '', '埃特拉': '', '秋栗': '', '卡契爾': '', '螢石': ''
+    };
+
+    // --- 模擬資料與設定 ---
+    const CHARACTERS = {
+      '洛茜': 6, '湯湯': 6, '駿衛': 6, '別禮': 6, '艾爾黛拉': 6, '伊馮': 6, '萊萬汀': 6, '黎風': 6, '潔爾佩塔': 6, '餘燼': 6,
+      '阿列什': 5, '大潘': 5, '晝雪': 5, '艾維文娜': 5, '賽希': 5, '弧光': 5, '狼衛': 5, '陳千語': 5, '佩麗卡': 5,
+      '安塔爾': 4, '埃特拉': 4, '秋栗': 4, '卡契爾': 4, '螢石': 4
+    };
+
+    const OPERATORS = {
+      6: Object.keys(CHARACTERS).filter(k => CHARACTERS[k] === 6),
+      5: Object.keys(CHARACTERS).filter(k => CHARACTERS[k] === 5),
+      4: Object.keys(CHARACTERS).filter(k => CHARACTERS[k] === 4),
+    };
+
+    const UP_6_STAR = '洛茜';
+    const REMOVED_OPERATORS = ['萊萬汀'];
+    const STANDARD_6_STARS = OPERATORS[6].filter(name => name !== UP_6_STAR && !REMOVED_OPERATORS.includes(name));
+
+    const RARITY_COLORS = {
+      6: { bg: 'bg-orange-50', text: 'text-orange-600', ring: 'ring-orange-500', glow: 'shadow-[0_0_15px_rgba(249,115,22,0.6)]' },
+      5: { bg: 'bg-yellow-50', text: 'text-yellow-600', ring: 'ring-yellow-400', glow: 'shadow-[0_0_10px_rgba(250,204,21,0.5)]' },
+      4: { bg: 'bg-purple-50', text: 'text-purple-600', ring: 'ring-purple-500', glow: 'shadow-sm' },
+    };
+
+    // --- 抽卡核心邏輯 (加入首次大保底規則) ---
+    const performPull = (currentPity80, currentPity120, currentPity10, hasReceivedUp) => {
+      // 若已抽中過 UP 角色，120 大保底機制將失效
+      let isUpGuaranteed = !hasReceivedUp && (currentPity120 + 1) >= 120;
+      let is6StarGuaranteed = (currentPity80 + 1) >= 80 || isUpGuaranteed;
+      let is5StarGuaranteed = (currentPity10 + 1) >= 10 && !is6StarGuaranteed;
+
+      let rate6 = 0.008; 
+      if (currentPity80 + 1 >= 65) rate6 += (currentPity80 + 1 - 64) * 0.05;
+
+      const roll = Math.random();
+      let rarity = 4; 
+      let name = '';
+      let isUp = false;
+
+      if (is6StarGuaranteed || roll < rate6) {
+        rarity = 6;
+        if (isUpGuaranteed || Math.random() < 0.5) {
+          name = UP_6_STAR; isUp = true;
+        } else {
+          name = STANDARD_6_STARS[Math.floor(Math.random() * STANDARD_6_STARS.length)];
+        }
+      } else if (is5StarGuaranteed || roll < rate6 + 0.08) {
+        rarity = 5;
+        name = OPERATORS[5][Math.floor(Math.random() * OPERATORS[5].length)];
+      } else {
+        rarity = 4;
+        name = OPERATORS[4][Math.floor(Math.random() * OPERATORS[4].length)];
+      }
+
+      return { 
+        name, rarity, isUp, newlyReceivedUp: isUp,
+        newPity80: rarity === 6 ? 0 : currentPity80 + 1,
+        // 120 抽保底計數器。如果已經拿到 UP 角色，計數器就不重要了
+        newPity120: (rarity === 6 && isUp) ? 0 : currentPity120 + 1,
+        newPity10: (rarity >= 5) ? 0 : currentPity10 + 1 
+      };
+    };
+
+    // --- 頭像組件 ---
+    const OperatorPortrait = ({ name, isUp, size = 'large' }) => {
+      const rarity = CHARACTERS[name];
+      const colors = RARITY_COLORS[rarity];
+      
+      const sizeClasses = size === 'large' 
+        ? 'w-full h-full' 
+        : 'w-[60px] h-[82px] md:w-[76px] md:h-[104px]';
+
+      // 🌟 改為直接讀取本地 images 資料夾下的圖片
+      const imgSrc = CLOUD_IMAGES[name] || `./images/${name}.png`;
+      const [imgFailed, setImgFailed] = useState(false); 
+
+      useEffect(() => {
+        setImgFailed(false);
+      }, [imgSrc]);
+
+      return (
+        <div className={`relative flex flex-col items-center justify-end ${sizeClasses} bg-gray-900 transform transition-transform hover:scale-105 overflow-hidden ring-2 ${isUp ? 'ring-red-500 ring-offset-1 ' + colors.glow : colors.ring + ' ' + colors.glow}`}>
+          
+          {!imgFailed ? (
+            <img
+              src={imgSrc}
+              alt={name}
+              onError={() => setImgFailed(true)}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          ) : (
+            <div className={`absolute inset-0 flex flex-col items-center justify-center p-1 text-center break-all font-bold ${colors.bg} ${colors.text} text-[10px] md:text-sm`}>
+              <span>{name}</span>
+              <span className="text-yellow-500 text-[8px] md:text-[10px] mt-1 drop-shadow-sm">{'★'.repeat(rarity)}</span>
+            </div>
+          )}
+
+          {isUp && (
+            <div className="absolute top-0 right-0 bg-red-600 text-white text-[8px] md:text-[10px] px-1 md:px-1.5 py-0.5 font-black shadow-md z-20 rounded-bl leading-none">
+              UP
+            </div>
+          )}
+
+          <div className={`relative w-full text-center py-0.5 md:py-1 ${isUp ? 'bg-red-600' : 'bg-gray-900'} bg-opacity-90 text-white font-bold z-10 truncate px-0.5 md:px-1 text-[9px] md:text-xs lg:text-sm shadow-[0_-2px_10px_rgba(0,0,0,0.5)]`}>
+            {name}
+          </div>
+        </div>
+      );
+    };
+
+    // --- 主程式 App ---
+    function App() {
+      const [showClearModal, setShowClearModal] = useState(false);
+
+      const [pullHistory, setPullHistory] = useState([]); 
+      const [currentPulls, setCurrentPulls] = useState([]); 
+      
+      const [pity80, setPity80] = useState(0); 
+      const [pity120, setPity120] = useState(0); 
+      const [pity10, setPity10] = useState(0);
+      
+      // 新增狀態：記錄是否已經獲得過 UP 角色
+      const [hasReceivedUp, setHasReceivedUp] = useState(false);
+
+      const [expandedSections, setExpandedSections] = useState({ 6: true, 5: true, 4: false });
+
+      const handlePull = useCallback((times) => {
+        let temp80 = pity80, temp120 = pity120, temp10 = pity10;
+        let tempHasReceivedUp = hasReceivedUp;
+        const newPulls = [];
+
+        for (let i = 0; i < times; i++) {
+          const result = performPull(temp80, temp120, temp10, tempHasReceivedUp);
+          newPulls.push({ ...result, id: Date.now() + i }); 
+          temp80 = result.newPity80; 
+          temp120 = result.newPity120; 
+          temp10 = result.newPity10;
+          if (result.newlyReceivedUp) {
+            tempHasReceivedUp = true;
+          }
+        }
+
+        setPity80(temp80); 
+        setPity120(temp120); 
+        setPity10(temp10);
+        setHasReceivedUp(tempHasReceivedUp);
+        setCurrentPulls(newPulls);
+        setPullHistory(prev => [...prev, ...newPulls]);
+      }, [pity80, pity120, pity10, hasReceivedUp]);
+
+      const handleClear = useCallback(() => {
+        setPullHistory([]); setCurrentPulls([]);
+        setPity80(0); setPity120(0); setPity10(0);
+        setHasReceivedUp(false); // 重置時同時恢復大保底資格
+        setShowClearModal(false);
+      }, []);
+
+      const totalPulls = pullHistory.length;
+      const inventory = useMemo(() => {
+        const inv = { 6: {}, 5: {}, 4: {} };
+        pullHistory.forEach(p => {
+          if (inv[p.rarity][p.name]) inv[p.rarity][p.name].count++;
+          else inv[p.rarity][p.name] = { count: 1, isUp: p.isUp };
+        });
+        return inv;
+      }, [pullHistory]);
+
+      return (
+        <div className="min-h-screen bg-gray-100 font-sans text-gray-800 selection:bg-orange-200 pb-10">
+          <div className="max-w-5xl mx-auto bg-white shadow-xl min-h-screen">
+            
+            <div className="relative w-full h-48 md:h-64 bg-gray-900 overflow-hidden border-b-2 border-orange-500">
+              <div className="absolute inset-0 bg-gradient-to-r from-slate-800 via-slate-700 to-slate-900"></div>
+              <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-center">
+                <span className="text-orange-400 font-bold tracking-widest text-sm mb-1">【塔衛二】合約招募</span>
+                <h1 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-200 italic tracking-wider mb-2 drop-shadow-lg">預見之眼</h1>
+                <p className="text-white text-lg md:text-xl font-light tracking-widest opacity-90 mb-4">限定 UP 幹員：<span className="font-bold text-orange-400">洛茜</span></p>
+                <div className="bg-black bg-opacity-60 inline-block p-2 px-3 rounded border-l-4 border-orange-500 max-w-sm backdrop-blur-sm">
+                  <p className="text-gray-300 text-xs md:text-sm leading-relaxed">
+                    <span className="text-orange-400 font-bold">首次 120 抽必出 UP！</span> 80抽必定獲得 6★<br/>第65抽起 6★ 機率逐步提升<br/>
+                    <span className="text-gray-400 mt-1 block">(註：萊萬汀已移出常駐尋訪池)</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="w-full bg-[#1e2024] min-h-[170px] p-2 md:p-4 flex items-center justify-center border-b-4 border-gray-700 shadow-inner">
+              {currentPulls.length === 0 ? (
+                <p className="text-gray-500 text-lg font-medium flex items-center gap-2">
+                  <Info size={20} /> 點擊下方按鈕進行尋訪
+                </p>
+              ) : (
+                <div className="flex flex-nowrap justify-center items-center gap-1 sm:gap-2 py-4 w-full px-1 max-w-5xl mx-auto">
+                  {currentPulls.map((pull, idx) => (
+                    <div key={pull.id} className="animate-fade-in-up flex-1 max-w-[65px] sm:max-w-[85px] md:max-w-[105px] aspect-[1/1.37]" style={{ animationDelay: `${idx * 0.05}s` }}>
+                      <OperatorPortrait name={pull.name} isUp={pull.isUp} size="large" />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="p-6 md:p-8">
+              <div className="flex flex-wrap gap-4 mb-6">
+                <button onClick={() => handlePull(1)} className="px-6 py-3 bg-white border-2 border-gray-300 text-gray-700 font-bold rounded hover:bg-gray-50 transition shadow-sm">
+                  尋訪 1 次
+                </button>
+                <button onClick={() => handlePull(10)} className="px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold rounded hover:from-orange-600 hover:to-orange-700 transition shadow-md">
+                  尋訪 10 次
+                </button>
+                <button onClick={() => setShowClearModal(true)} className="px-6 py-3 bg-[#c94b4b] text-white font-bold rounded hover:bg-red-700 transition shadow-sm flex items-center gap-2 ml-auto">
+                  <Trash2 size={18} />
+                  重置卡池
+                </button>
+              </div>
+
+              <div className="mb-8 p-4 bg-gray-50 rounded-lg border border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm md:text-base text-gray-700 shadow-inner">
+                <div>
+                  <p className="mb-1 text-gray-500">總尋訪次數</p>
+                  <p className="text-2xl font-black text-gray-800">{totalPulls}</p>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center bg-white p-2 rounded border border-gray-100">
+                    <span className="text-gray-600">距 <span className="font-bold text-orange-500">6★</span> 小保底剩餘：</span>
+                    <span className={`font-black text-lg ${80 - pity80 <= 15 ? 'text-red-500' : 'text-gray-800'}`}>{80 - pity80} 抽</span>
+                  </div>
+                  
+                  {/* 【安全 DOM 渲染】大保底狀態顯示更新，確保結構不變，防止翻譯導致崩潰 */}
+                  <div className={`flex justify-between items-center p-2 rounded border ${hasReceivedUp ? 'bg-gray-100 border-gray-200' : 'bg-white border-orange-200'}`}>
+                    <span className={hasReceivedUp ? 'text-gray-400' : 'text-gray-600'}>
+                      距 <span className={`font-bold ${hasReceivedUp ? 'text-gray-500' : 'text-red-500'}`}>UP 洛茜</span> 大保底{hasReceivedUp ? '：' : '剩餘：'}
+                    </span>
+                    {hasReceivedUp ? (
+                      <span className="font-bold text-sm text-gray-500 bg-gray-200 px-2 py-0.5 rounded">已達成</span>
+                    ) : (
+                      <span className="font-black text-lg text-red-600">{120 - pity120} 抽</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="font-bold text-lg border-l-4 border-orange-500 pl-2 mb-4">獲得幹員圖鑑</h3>
+                {[6, 5, 4].map(rarity => {
+                  const count = Object.keys(inventory[rarity]).reduce((sum, key) => sum + inventory[rarity][key].count, 0);
+                  const isExpanded = expandedSections[rarity];
+                  const charList = Object.entries(inventory[rarity]).sort((a, b) => b[1].count - a[1].count);
+
+                  if (count === 0) return null;
+
+                  return (
+                    <div key={rarity} className="border border-gray-200 rounded-lg overflow-hidden">
+                      <button onClick={() => setExpandedSections(p => ({...p, [rarity]: !p[rarity]}))} className={`flex items-center w-full text-left py-3 px-4 transition ${RARITY_COLORS[rarity].bg} hover:brightness-95`}>
+                        <span className={`mr-2 ${RARITY_COLORS[rarity].text}`}>{isExpanded ? <ChevronDown size={20} /> : <ChevronRight size={20} />}</span>
+                        <span className={`font-bold ${RARITY_COLORS[rarity].text}`}>{rarity}★ 幹員</span>
+                        <span className="ml-auto text-sm font-medium bg-white px-3 py-1 rounded-full shadow-sm text-gray-600">共 {count} 名</span>
+                      </button>
+                      {isExpanded && (
+                        <div className="p-4 bg-white">
+                          <div className="flex flex-wrap gap-5">
+                            {charList.map(([name, data]) => (
+                              <div key={name} className="relative group">
+                                <OperatorPortrait name={name} isUp={data.isUp} size="small" />
+                                {data.count > 1 && (
+                                  <div className="absolute -top-2 -right-2 bg-gray-800 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow-md border-2 border-white z-20">x{data.count}</div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {showClearModal && (
+              <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
+                <div className="bg-white rounded-lg shadow-xl max-w-sm w-full p-6 animate-fade-in-up">
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">確認重置卡池？</h3>
+                  <p className="text-gray-600 mb-6 text-sm">確定要清空所有尋訪紀錄嗎？此操作無法復原，所有的抽卡次數與保底進度（包含 120 抽首次大保底資格）都會歸零。</p>
+                  <div className="flex justify-end gap-3">
+                    <button onClick={() => setShowClearModal(false)} className="px-4 py-2 bg-gray-100 text-gray-700 font-bold rounded hover:bg-gray-200 transition">取消</button>
+                    <button onClick={handleClear} className="px-4 py-2 bg-red-600 text-white font-bold rounded hover:bg-red-700 transition shadow-sm flex items-center gap-2">
+                      <Trash2 size={16} /> 確定清空
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+          </div>
+          <style dangerouslySetInnerHTML={{__html: `
+            @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+            .animate-fade-in-up { animation: fadeInUp 0.3s ease-out forwards; opacity: 0; }
+          `}} />
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
